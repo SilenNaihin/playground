@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Card from "./CodingProblem/Card";
+import Card from "./Card";
 
-export default function CodingProblem() {
+export default function RenderingArray() {
   const data = [
     { id: 0, times: [2, 23] },
     { id: 1, times: [2, 3, 7, 21] },
