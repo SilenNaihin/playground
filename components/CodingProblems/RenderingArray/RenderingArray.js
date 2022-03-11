@@ -22,7 +22,9 @@ export default function RenderingArray() {
 
     let elements = "";
     let id = "";
+    console.log("_______________", selected);
     selected.forEach((item, i) => {
+      
       if (typeof item === "string") {
         id = parseInt(item);
       } else {

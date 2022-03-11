@@ -2,14 +2,19 @@ import RenderingArray from "../components/CodingProblems/RenderingArray/Renderin
 import MergeSort from "../components/Learning/MergeSort";
 import HeapSort from "../components/Learning/HeapSort";
 import SynthesisCopy from "../components/Projects/SynthesisCopy";
-import TabWrapper from "../components/TabWrapper";
 import { useEffect, useState } from "react";
 
+const components = {
+  RenderingArray: RenderingArray,
+  MergeSort: MergeSort,
+  HeapSort: HeapSort,
+  SynthesisCopy: SynthesisCopy,
+};
+
 export default function Home() {
-  const [currTab, setCurrTab] = useState("RenderingArray");
-  // finish this, implement dropdown
+  const [currTabName, setCurrTabName] = useState("RenderingArray");
   const [tabs, setTabs] = useState({
-    problems: {
+    Problems: {
       RenderingArray: {
         title: "Rendering Array",
         desc: `Solving a coding problem an unconventional way. Code is un-optimized or cleaned, built the concept to prove a 
@@ -20,7 +25,7 @@ export default function Home() {
         optimal (https://www.desmos.com/calculator/6cf9lijgwg).`,
       },
     },
-    learning: {
+    Learning: {
       HeapSort: {
         title: "Heap Sort",
         desc: `Heap Sort is a sorting algorithm that works by building a heap from the bottom up. The heap is a binary tree 
@@ -35,7 +40,7 @@ export default function Home() {
         This is a very simple implementation of merge sort. It is O(n log n) with n being the number of items in the list.`,
       },
     },
-    projects: {
+    Projects: {
       SynthesisCopy: {
         title: "Synthesis Copy",
         desc: `Challenged to turn a LeetCode interview question into a mobile friendly replica of https://www.synthesis.is/ (the
@@ -43,40 +48,66 @@ export default function Home() {
       },
     },
   });
-  const [category, setCategory] = useState("problems");
-  const [CurrentComponent, setCurrentComponent] = useState(<RenderingArray />);
+  const [category, setCategory] = useState("Problems");
+  const [openCategory, setOpenCategory] = useState("Problems");
 
-  useEffect(() => {
-    setCurrentComponent(<CurrentComponent currTab={currTab} />);
-    console.log(CurrentComponent);
-  }, [currTab]);
+  const CurrentComponent = components[currTabName];
+
+  const clickTab = (categoryName, tabComponent) => {
+    setCategory(categoryName);
+    setCurrTabName(tabComponent);
+  };
 
   return (
-    <>
-      <div className="w-full h-8 flex pb-0.5">
-        {console.log(Object.entries(tabs))}
+    <div>
+      <div className="w-full h-8 flex">
         {Object.entries(tabs).map((category, i) => {
           const categoryName = category[0];
-          console.log(Object.entries(category[1]));
+          const categoryTabs = [];
+          let tabName = "";
+          let tabComponent = "";
+
           Object.entries(category[1]).map((tab) => {
-            const tabComponent = tab[0];
-            const tabName = tab[1].title;
-            return (
+            tabComponent = tab[0];
+            tabName = tab[1].title;
+            categoryTabs.push(
               <div
-                className="px-2 bg-gray-100 ml-2 h-full border-b border-r border-l rounded-b"
-                onClick={() => setCurrTab(tabComponent)}
-                key={i}
+                className={`mt-2 flex justify-center items-center rounded-b-lg ${
+                  categoryName === openCategory ? "" : "hidden"
+                } ${tabComponent === currTabName ? "" : "bg-gray-100"}`}
               >
-                {tabName}
+                <div
+                  className="px-2"
+                  onClick={() => clickTab(categoryName, tabComponent)}
+                >
+                  {tabName}
+                </div>
+                <div className=" h-2/3 bg-gray-400" style={{ width: "1px" }} />
               </div>
             );
           });
-          return <div key={categoryName}>{categoryName}</div>;
+
+          return (
+            <div className="flex" key={categoryName}>
+              <div>
+                <div className="px-2 ml-2 bg-red-100 h-1 rounded-lg border-b border-r border-l" />
+                <div
+                  className="px-2 flex justify-center items-center mt-1 bg-red-100 ml-2 h-full border rounded-lg"
+                  onClick={() => setOpenCategory(categoryName)}
+                >
+                  {categoryName}
+                </div>
+              </div>
+              {categoryTabs.map((tab) => tab)}
+            </div>
+          );
         })}
-        <TabWrapper desc={tabs[category][currTab].desc}>
-          <CurrentComponent />
-        </TabWrapper>
       </div>
-    </>
+      {console.log(tabs[category], category, openCategory, CurrentComponent)}
+      <div className="w-full flex flex-col p-4">
+        <div className="pb-4">desc={tabs[category][currTabName].desc}</div>
+        <CurrentComponent />
+      </div>
+    </div>
   );
 }
