@@ -2,6 +2,8 @@ import RenderingArray from '../components/CodingProblems/RenderingArray/Renderin
 import MergeSort from '../components/Learning/MergeSort';
 import HeapSort from '../components/Learning/HeapSort';
 import SynthesisCopy from '../components/Projects/SynthesisCopy';
+import MarkdownCompiler from '../components/CodingProblems/MarkdownCompiler/MarkdownCompiler';
+import PotionInterview from '../components/CodingProblems/PotionInterview/PotionInterview';
 import { useEffect, useState } from 'react';
 
 const components = {
@@ -9,6 +11,8 @@ const components = {
   MergeSort: MergeSort,
   HeapSort: HeapSort,
   SynthesisCopy: SynthesisCopy,
+  MarkdownCompiler: MarkdownCompiler,
+  PotionInterview: PotionInterview,
 };
 
 export default function Home() {
@@ -27,6 +31,10 @@ export default function Home() {
       MarkdownCompiler: {
         title: 'Markdown Compiler',
         desc: `Creating a markdown compiler when accounting for blockquotes, strikethroughs, and line breaks.`,
+      },
+      PotionInterview: {
+        title: 'Potion Interview',
+        desc: `Dev environment for the Potion interview.`,
       },
     },
     Learning: {
@@ -109,7 +117,9 @@ export default function Home() {
       </div>
       {console.log(tabs[category], category, openCategory, CurrentComponent)}
       <div className='w-full flex flex-col p-4'>
-        <div className='pb-4'>desc={tabs[category][currTabName].desc}</div>
+        <div className='pb-4'>
+          <b>Description:</b> {tabs[category][currTabName].desc}
+        </div>
         <CurrentComponent />
       </div>
     </div>
